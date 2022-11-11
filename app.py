@@ -1,17 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 import naukri_api
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return render_template('home.html')
+    if request.method == 'GET':
+        data = 'hello world'
+    return jsonify({'data' : data})
 
 
-@app.route('/get_data')
-def get_data():
-    data = naukri_api.load(1)
+@app.route('/get_data/<int:no_of_pages>', methods=['GET'])
+def get_data(no_of_pages):
+    data = naukri_api.load(no_of_pages)
     return data
 
 
