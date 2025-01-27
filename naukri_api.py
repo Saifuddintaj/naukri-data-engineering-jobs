@@ -25,7 +25,7 @@ class jobDetails():
         self.description = description
 
     def get_csv(self):
-        csv = self.jobid + ',' + self.title + ',' + self.company + ',' + self.posted + ',' + self.location + ',' + self.salary + ',' + self.experience + ',' + self.description + '\n'
+        csv = f'"{self.jobid}"' + ',' + f'"{self.title}"' + ',' + f'"{self.company}"' + ',' + f'"{self.posted}"' + ',' + f'"{self.location}"' + ',' + f'"{self.salary}"' + ',' + f'"{self.experience}"' + ',' + f'"{self.description}"' + '\n'
         return csv
 
 
@@ -41,18 +41,11 @@ def extract(page):
         jobid = json_response['jobDetails'][i]['jobId']
         title = json_response['jobDetails'][i]['title']
         company = json_response['jobDetails'][i]['companyName']
-        company = re.sub(',', '.', company)
         posted = json_response['jobDetails'][i]['footerPlaceholderLabel']
-        company = re.sub(',', '.', company)
         description = json_response['jobDetails'][i]['jobDescription']
-        description = remove_tags(description)
-        description = re.sub(',', '.', description)
         location = json_response['jobDetails'][i]['placeholders'][2]['label']
-        location = re.sub(',', '.', location)
         salary = json_response['jobDetails'][i]['placeholders'][1]['label']
-        salary = re.sub(',', '', salary)
         experience = json_response['jobDetails'][i]['placeholders'][0]['label']
-        experience = re.sub(',', '.', experience)
         jd_i = jobDetails(jobid, title, company, posted, description, location, salary, experience)
         jd += (jd_i.get_csv())
     return jd
